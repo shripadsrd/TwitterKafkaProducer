@@ -20,9 +20,8 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 public class TwitterProducer {
 
     private static final String TOPIC = "twitter-topic";
-    private static final String HASHTAG = "#mondaymotivation";
 
-    public static void run(final String consumerKey, final String consumerSecret,
+    public static void run(final String hashtag, final String consumerKey, final String consumerSecret,
                            final String token, final String secret) {
 
         final Properties properties = new Properties();
@@ -35,7 +34,7 @@ public class TwitterProducer {
         final BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10000);
         final StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint();
         // add some track terms
-        endpoint.trackTerms(Lists.newArrayList(HASHTAG));
+        endpoint.trackTerms(Lists.newArrayList(hashtag));
 
 
         final Authentication auth = new OAuth1(consumerKey, consumerSecret, token,
@@ -66,10 +65,10 @@ public class TwitterProducer {
     }
     public static void main(final String[] args) {
         try {
-            if (args.length == 4) {
-                TwitterProducer.run(args[0], args[1], args[2], args[3]);
+            if (args.length == 5) {
+                TwitterProducer.run(args[0], args[1], args[2], args[3], args[4]);
             } else {
-                System.out.println("Four arguments required");
+                System.out.println("Five arguments required: hashtag, consumerKey, consumerSecret, token, secret");
             }
         } catch (Exception e) {
             e.printStackTrace();
